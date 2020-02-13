@@ -2,5 +2,21 @@ body {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    background-color: sienna;
+    background-color:#f1f1f1 !important;
+    height: 100vh;
+}
+
+header::before {
+    content: '';
+    height: 0.6rem;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background: rgb(99,64,64);
+    background: linear-gradient(90deg, rgba(99,64,64,1) 9%, rgba(159,44,157,1) 100%);
+    border-bottom: 2px solid white;
+}
+
+#logo {
+    height: 3rem;
 }
