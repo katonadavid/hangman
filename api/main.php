@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+
+$_SESSION['lang'] = 'en';
+
 $urlArray = explode('/', $_SERVER['REQUEST_URI']);
 
 $classToLoad = $urlArray[sizeof($urlArray)-2];
