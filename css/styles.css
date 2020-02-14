@@ -18,5 +18,72 @@ header::before {
 }
 
 #logo {
+    height: 2rem;
+}
+
+
+/* Man drawing */
+
+#man svg {
+    height: 310px;
+}
+
+/* @media(max-height: 500px){
+    #man svg {
+        height: 30vh;
+    }
+} */
+
+/* Man animations */
+
+#mouth-2-grp {
+    display: none;
+}
+
+#eye2-path, #eye1-path {
+    stroke-dasharray: 25px;
+    stroke-dashoffset: 0;
+    animation: blink 6s infinite linear;
+}
+
+@keyframes blink {
+    0%{
+        stroke-dashoffset: 0;
+    }
+    96%{
+        stroke-dashoffset: 0;
+    }
+    98%{
+        stroke-dashoffset: -25px;
+    }
+    100%{
+        stroke-dashoffset: 0;
+    }
+}
+
+
+/* Letters */
+
+.letter {
     height: 3rem;
+    width: 2rem;
+}
+
+.letter::after {
+    content: '';
+    height: 5px;
+    width: 30px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background: url(../img/line.svg) no-repeat;
+}
+
+.letter > span {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #482f2f;
 }
