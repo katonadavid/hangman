@@ -15,6 +15,7 @@
     <title>Hangman v0.1</title>
 </head>
 <body class="d-flex flex-column">
+
     <header class="w-100 d-flex justify-content-center py-3">
         <img id="logo" src="img/logo.svg" alt="">
     </header>
@@ -175,23 +176,21 @@
         </section>
         <!-- END OF MAN -->
         <section class="d-flex flex-fill flex-column justify-content-around align-items-center">
-            <div id="lines" class="d-flex">
-                <div class="letter position-relative d-flex align-items-end justify-content-center m-1">
-                    <span class="text-uppercase">A</span>
-                </div>
-                <div class="letter position-relative d-flex align-items-end justify-content-center m-1">
-                    <span class="text-uppercase">l</span>
-                </div>
-                <div class="letter position-relative d-flex align-items-end justify-content-center m-1">
-                    <span class="text-uppercase">m</span>
-                </div>
-                <div class="letter position-relative d-flex align-items-end justify-content-center m-1">
-                    <span class="text-uppercase">a</span>
-                </div>
-            </div>
+            <div id="letter-list" class="d-flex"></div>
             <input type="text" name="letterinput" id="letterinput" class="text-uppercase text-center" size="2" maxlength="1">
         </section>
     </main>
-    
 </body>
+
+<!-- Word and letter templates -->
+<template id="tmp-word">
+        <div class="word">
+
+        </div>
+</template>
+<template id="tmp-letter">
+    <div class="position-relative d-flex align-items-end justify-content-center m-1">
+                    <span class="letter text-uppercase"></span>
+    </div>
+</template>
 </html>

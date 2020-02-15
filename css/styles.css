@@ -149,12 +149,12 @@ input:focus{
 
 /* Letters */
 
-.letter {
+.letter-frame {
     height: 3rem;
     width: 2rem;
 }
 
-.letter::after {
+.letter-frame::after {
     content: '';
     height: 5px;
     width: 30px;
@@ -167,7 +167,7 @@ input:focus{
     background: url(../img/line.svg) no-repeat;
 }
 
-.letter > span {
+.letter {
     font-weight: bold;
     font-size: 2rem;
     color: #482f2f;
