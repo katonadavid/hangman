@@ -177,7 +177,7 @@
         <!-- END OF MAN -->
         <section class="d-flex flex-fill flex-column justify-content-around align-items-center">
             <div id="letter-list" class="d-flex"></div>
-            <input type="text" name="letterinput" id="letterinput" class="text-uppercase text-center" size="2" maxlength="1">
+            <input type="text" name="letterinput" id="letterinput" class="text-center" size="2" maxlength="1">
         </section>
     </main>
 </body>

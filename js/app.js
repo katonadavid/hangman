@@ -48,12 +48,20 @@ class App {
 
     constructor (apiUrl) {
         this.api = new ApiHelper(apiUrl);
+        this.input = document.querySelector('input');
+        this.input.addEventListener('input', this.checkLetter);
     }
 
     async init () {
         this.wordsLength = await this.api.getWord();
         this.letters = new LetterList(this.wordsLength);
     }
+
+    checkLetter(e) {
+        console.log(this.value);
+    }
+
+
 }
 
 const apiUrl = 'http://localhost/davidkatona/hangman/api';
