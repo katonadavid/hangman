@@ -13,15 +13,17 @@ class LetterList {
         let letterTemplate = document.querySelector('#tmp-letter');
         this.wordObjects = [];
 
-        for(let i = 0; i < wordLengths.length; i++){
-            // Making a word element in the DOM
-            let wordObject = wordTemplate.content.cloneNode(true);
-            // Adding the lines to it
-            for(let i = 0; i < wordLengths[i]; i++){
-                wordObject.append(letterTemplate.content.cloneNode(true));
+        wordLengths.forEach( length => {
+            
+            let wordObject = wordTemplate.content.cloneNode(true).querySelector('div');
+
+            for(let j = 0; j < length; j++){
+                let letterObject = letterTemplate.content.cloneNode(true);
+                this.wordObjects.push(wordObject);
+                wordObject.append(letterObject);
             }
             this.letterListObject.append(wordObject);
-        }
+        });
         
     }
 }

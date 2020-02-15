@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/app.js"></script>
+    <script src="js/app.js" defer></script>
     <title>Hangman v0.1</title>
 </head>
 <body class="d-flex flex-column">
@@ -184,12 +184,10 @@
 
 <!-- Word and letter templates -->
 <template id="tmp-word">
-        <div class="word">
-
-        </div>
+        <div class="word d-flex mx-3"></div>
 </template>
 <template id="tmp-letter">
-    <div class="position-relative d-flex align-items-end justify-content-center m-1">
+    <div class="letter-frame position-relative d-flex align-items-end justify-content-center m-1">
                     <span class="letter text-uppercase"></span>
     </div>
 </template>
