@@ -1,3 +1,9 @@
+<?php 
+// session_save_path('sess/');
+// session_start();
+// echo $_COOKIE['PHPSESSID'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

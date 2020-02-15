@@ -1,6 +1,9 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+session_save_path('../sess');
 session_start();
+
 
 $_SESSION['lang'] = 'en';
 
