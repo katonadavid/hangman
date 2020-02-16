@@ -1,174 +1,196 @@
 body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    background-color:#f1f1f1 !important;
-    height: 100vh;
-    user-select: none;
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #f1f1f1 !important;
+  height: 100vh;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 header::before {
-    content: '';
-    height: 0.6rem;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    background: rgb(99,64,64);
-    background: linear-gradient(90deg, rgba(99,64,64,1) 9%, rgba(159,44,157,1) 100%);
-    border-bottom: 2px solid white;
+  content: '';
+  height: 0.6rem;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background: #482f2f;
+  background: -webkit-gradient(linear, left top, right top, color-stop(9%, #482f2f), to(#9f2c9d));
+  background: linear-gradient(90deg, #482f2f 9%, #9f2c9d 100%);
+  border-bottom: 2px solid white;
 }
 
 #logo {
-    height: 2rem;
+  height: 2rem;
 }
 
-input{
-    border: 1px solid gray;
-    background-color: #482f2f;
-    font-weight: bold;
-    color: wheat;
+input {
+  border: 1px solid gray;
+  background-color: #482f2f;
+  font-weight: bold;
+  color: wheat;
 }
 
-input:focus{
-    border: 1px solid #482f2f;
-    outline: none;
-    -webkit-box-shadow: 0px 0px 1px 2px rgba(72,47,47,1);
-    -moz-box-shadow: 0px 0px 2px 1px rgba(72,47,47,1);
-    box-shadow: 0px 0px 2px 1px rgba(72,47,47,1);
+input:focus {
+  border: 1px solid #482f2f;
+  outline: none;
+  -webkit-box-shadow: 0px 0px 1px 2px #482f2f;
+  box-shadow: 0px 0px 2px 1px #482f2f;
 }
-
 
 /* Man drawing */
-
 #man {
-    height: 310px;
+  height: 310px;
 }
 
-
-/* Initially hide drawing */ 
-
+/* Initially hide drawing */
 #ground-path {
-    stroke-dasharray: 470px;
-    stroke-dashoffset: 440px;
+  stroke-dasharray: 470px;
+  stroke-dashoffset: 440px;
 }
 
 #wood1-path {
-    stroke-dasharray: 1070px;
-    stroke-dashoffset: 1070px;
+  stroke-dasharray: 1070px;
+  stroke-dashoffset: 1070px;
 }
 
 #wood2-path {
-    stroke-dasharray: 644px;
-    stroke-dashoffset: 622px;
+  stroke-dasharray: 644px;
+  stroke-dashoffset: 622px;
 }
 
 #wood3-path {
-    stroke-dasharray: 420px;
-    stroke-dashoffset: 405px;
+  stroke-dasharray: 420px;
+  stroke-dashoffset: 405px;
 }
 
 #wood4-path {
-    stroke-dasharray: 220px;
-    stroke-dashoffset: 200px;
+  stroke-dasharray: 220px;
+  stroke-dashoffset: 200px;
 }
 
 #head1-path {
-    stroke-dasharray: 645px;
-    stroke-dashoffset: 649px;
+  stroke-dasharray: 645px;
+  stroke-dashoffset: 649px;
 }
 
 #eye2-path, #eye1-path {
-    stroke-dasharray: 25px;
-    stroke-dashoffset: 26px;
+  stroke-dasharray: 25px;
+  stroke-dashoffset: 26px;
 }
 
 #mouth-path {
-    stroke-dasharray: 80px;
-    stroke-dashoffset: 76px;
+  stroke-dasharray: 80px;
+  stroke-dashoffset: 76px;
 }
 
 #body-path {
-    stroke-dasharray: 333px;
-    stroke-dashoffset: 321px;
+  stroke-dasharray: 333px;
+  stroke-dashoffset: 321px;
 }
 
 #left-arm-path, #right-arm-path {
-    stroke-dasharray: 227px;
-    stroke-dashoffset: 214px;
+  stroke-dasharray: 227px;
+  stroke-dashoffset: 214px;
 }
 
 #left-leg-path, #right-leg-path {
-    stroke-dasharray: 250px;
-    stroke-dashoffset: 250px;
+  stroke-dasharray: 250px;
+  stroke-dashoffset: 250px;
 }
 
 /* Man animations */
-
 #mouth-2-grp {
-    display: none;
+  display: none;
 }
 
 #eye2-path.blink, #eye1-path.blink {
-    stroke-dasharray: 25px;
+  stroke-dasharray: 25px;
+  stroke-dashoffset: 0;
+  -webkit-animation: blink 6s infinite linear;
+          animation: blink 6s infinite linear;
+}
+
+@-webkit-keyframes blink {
+  0% {
     stroke-dashoffset: 0;
-    animation: blink 6s infinite linear;
+  }
+  96% {
+    stroke-dashoffset: 0;
+  }
+  98% {
+    stroke-dashoffset: -25px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes blink {
-    0%{
-        stroke-dashoffset: 0;
-    }
-    96%{
-        stroke-dashoffset: 0;
-    }
-    98%{
-        stroke-dashoffset: -25px;
-    }
-    100%{
-        stroke-dashoffset: 0;
-    }
+  0% {
+    stroke-dashoffset: 0;
+  }
+  96% {
+    stroke-dashoffset: 0;
+  }
+  98% {
+    stroke-dashoffset: -25px;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
+
 .draw {
-    animation: draw 300ms linear forwards;
+  -webkit-animation: draw 300ms linear forwards;
+          animation: draw 300ms linear forwards;
+}
+
+@-webkit-keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes draw {
-    to {
-        stroke-dashoffset: 0;
-    }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* Past letters */
-
-#past-letters{
-    background-color: #482f2f;
-    color: white;
-    border-radius: 5%;
-    min-height: 30%;
+#past-letters {
+  background-color: #482f2f;
+  color: white;
+  border-radius: 5%;
+  min-height: 30%;
 }
 
 /* Letters */
-
 .letter-frame {
-    height: 3rem;
-    width: 2rem;
+  height: 3rem;
+  width: 2rem;
 }
 
 .letter-frame::after {
-    content: '';
-    height: 5px;
-    width: 30px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    background: url(../img/line.svg) no-repeat;
+  content: '';
+  height: 5px;
+  width: 30px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: url(../img/line.svg) no-repeat;
 }
 
 .letter {
-    font-weight: bold;
-    font-size: 2rem;
-    color: #482f2f;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #482f2f;
 }
+/*# sourceMappingURL=styles.css.map */

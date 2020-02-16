@@ -41,6 +41,19 @@ class ApiHelper {
         return wordsLength;
     }
 
+    async checkLetter (letter) {
+    
+        const post = new FormData();
+        post.append('letter', letter);
+        const response = await fetch(`${this.url}/word/checkletter`,{
+            method : 'post',
+            body : post
+        });
+        
+        const result = response.json();
+        return result;
+    }
+
 
 }
 
@@ -48,17 +61,26 @@ class App {
 
     constructor (apiUrl) {
         this.api = new ApiHelper(apiUrl);
-        this.input = document.querySelector('input');
-        this.input.addEventListener('input', this.checkLetter);
+        this.pastLettersDiv = document.querySelector('#past-letters');
     }
-
+    
     async init () {
         this.wordsLength = await this.api.getWord();
         this.letters = new LetterList(this.wordsLength);
+        this.input = document.querySelector('input');
+        this.input.addEventListener('input', this.checkLetter.bind(this));
     }
 
-    checkLetter(e) {
-        console.log(this.value);
+    async checkLetter() {
+        const letter = this.input.value;
+        this.input.value = '';
+        const result = await this.api.checkLetter(letter);
+        console.log(result);
+        
+        
+        const letterSpan = document.createElement('span');
+
+        
     }
 
 

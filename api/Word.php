@@ -29,20 +29,31 @@ class Word {
     }
 
     function checkLetter() {
-
-        $letter = 'p';
-        $word = $_SESSION['word'];
-
+        $letter = strtoupper($_POST['letter']);
+        $wordArray = $_SESSION['word'];
         $letterIndexes = [];
 
-        for($i = 0; $i < strlen($word); $i++){
-            if($word[$i] == $letter){
-                $letterIndexes[] = $i;
+        // If the player has not yet used this letter
+        if(!in_array($letter, $_SESSION['pastletters'])){
+
+            $_SESSION['pastletters'][] = $letter;
+
+            for($i = 0; $i < sizeof($wordArray); $i++){
+                
+                $word = strtoupper($wordArray[$i]);
+
+                for($j = 0; $j < strlen($word); $j++){
+                    
+                    if($word[$j] == $letter){
+                        $letterIndexes[] = $j;
+                    }
+                }
             }
+            echo json_encode($letterIndexes, JSON_UNESCAPED_UNICODE);
+            // Itt folytatni. hiába regisztrálja a múltbeliek közé a betűt, a response marad az indextömb
+        }else{
+            echo json_encode(false, JSON_UNESCAPED_UNICODE);
         }
-
-        echo json_encode($letterIndexes, JSON_UNESCAPED_UNICODE);
-
     }
 }
 

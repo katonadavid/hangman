@@ -23,21 +23,6 @@
         <section class="d-flex justify-content-center align-items-center h-75 px-3" id="middle">
             <div id="middle-left" class="h-100 flex-fill d-flex align-items-center">
                 <div id="past-letters" class="p-3 font-weight-bold">
-                    <span>A</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <br>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
-                    <br>
-                    <span>X</span>
-                    <span>X</span>
-                    <span>X</span>
                 </div>
             </div>
             <div id="middle-right" class="h-100 flex-fill d-flex align-items-center">

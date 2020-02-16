@@ -6,6 +6,7 @@ session_start();
 
 
 $_SESSION['lang'] = 'en';
+$_SESSION['pastletters'] = [];
 
 $urlArray = explode('/', $_SERVER['REQUEST_URI']);
 
