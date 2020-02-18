@@ -107,7 +107,7 @@ input:focus {
   display: none;
 }
 
-#eye2-path.blink, #eye1-path.blink {
+#eye2-path.draw, #eye1-path.draw {
   stroke-dasharray: 25px;
   stroke-dashoffset: 0;
   -webkit-animation: blink 6s infinite linear;
@@ -166,7 +166,14 @@ input:focus {
   background-color: #482f2f;
   color: white;
   border-radius: 5%;
-  min-height: 30%;
+  max-width: 135px;
+  word-break: break-all;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+#past-letters span {
+  padding: 0.3rem;
 }
 
 /* Letters */

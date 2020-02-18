@@ -5,8 +5,11 @@ session_save_path('../sess');
 session_start();
 
 
-$_SESSION['lang'] = 'en';
-$_SESSION['pastletters'] = [];
+$_SESSION['lang'] = 'de';
+
+if(!isset($_SESSION['pastletters'])){
+    $_SESSION['pastletters'] = [];
+}
 
 $urlArray = explode('/', $_SERVER['REQUEST_URI']);
 

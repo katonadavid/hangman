@@ -16,40 +16,45 @@ class Word {
 
         // We might get compound words, so we explode the returned string into words
         $wordsArray = explode(' ',$row->word);
+
+        foreach ($wordsArray as $i => $word) {
+            // Converting the words to lowercase, and split it to array with multibyte chars preserved
+            $wordsArray[$i] = preg_split('//u', mb_strtolower($word), null, PREG_SPLIT_NO_EMPTY);
+        }
+
         $_SESSION['word'] = $wordsArray;
 
-        $wordLength = [];
+        $wordsLengths = [];
 
         // Preparing the array of word lengths to be returned
         foreach($wordsArray as $word){
-            $wordLength[] = strlen($word);
+            $wordsLengths[] = sizeof($word);
         }
 
-        echo json_encode($wordLength, JSON_UNESCAPED_UNICODE);
+        echo json_encode($wordsLengths, JSON_UNESCAPED_UNICODE);
     }
 
     function checkLetter() {
-        $letter = strtoupper($_POST['letter']);
-        $wordArray = $_SESSION['word'];
+        $letter = mb_strtolower($_POST['letter']);
+        $charactersArray = $_SESSION['word'];
         $letterIndexes = [];
 
         // If the player has not yet used this letter
         if(!in_array($letter, $_SESSION['pastletters'])){
-
             $_SESSION['pastletters'][] = $letter;
-
-            for($i = 0; $i < sizeof($wordArray); $i++){
+            $letterFound = false;
+            for($i = 0; $i < sizeof($charactersArray); $i++){
                 
-                $word = strtoupper($wordArray[$i]);
-
-                for($j = 0; $j < strlen($word); $j++){
-                    
-                    if($word[$j] == $letter){
-                        $letterIndexes[] = $j;
+                $letterIndexes[$i] = [];
+                
+                for($j = 0; $j < sizeof($charactersArray[$i]); $j++){
+                    if($charactersArray[$i][$j] == $letter){
+                        $letterFound = true;
+                        $letterIndexes[$i][] = $j;
                     }
                 }
             }
-            echo json_encode($letterIndexes, JSON_UNESCAPED_UNICODE);
+            echo json_encode([$letterFound, $letterIndexes], JSON_UNESCAPED_UNICODE);
             // Itt folytatni. hiába regisztrálja a múltbeliek közé a betűt, a response marad az indextömb
         }else{
             echo json_encode(false, JSON_UNESCAPED_UNICODE);

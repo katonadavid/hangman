@@ -1,7 +1,13 @@
 <?php 
-// session_save_path('sess/');
-// session_start();
-// echo $_COOKIE['PHPSESSID'];
+session_save_path('sess/');
+session_start();
+
+if(isset($_COOKIE[session_name()])){
+    setcookie(session_name(), "", time()-3600, "/");
+}
+
+$_SESSION = [];
+session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +28,7 @@
     <main class="d-flex flex-column flex-fill">
         <section class="d-flex justify-content-center align-items-center h-75 px-3" id="middle">
             <div id="middle-left" class="h-100 flex-fill d-flex align-items-center">
-                <div id="past-letters" class="p-3 font-weight-bold">
+                <div id="past-letters" class="d-flex justify-content-center align-items-center font-weight-bold">
                 </div>
             </div>
             <div id="middle-right" class="h-100 flex-fill d-flex align-items-center">
@@ -161,15 +167,15 @@
         </section>
         <!-- END OF MAN -->
         <section class="d-flex flex-fill flex-column justify-content-around align-items-center">
-            <div id="letter-list" class="d-flex"></div>
-            <input type="text" name="letterinput" id="letterinput" class="text-center" size="2" maxlength="1">
+            <div id="letter-list" class="d-flex w-100"></div>
+            <input type="text" name="letterinput" id="letterinput" class="text-center" size="2" maxlength="1" autofocus>
         </section>
     </main>
 </body>
 
 <!-- Word and letter templates -->
 <template id="tmp-word">
-        <div class="word d-flex mx-3"></div>
+        <div class="word d-flex mx-3 w-100 flex-wrap justify-content-center"></div>
 </template>
 <template id="tmp-letter">
     <div class="letter-frame position-relative d-flex align-items-end justify-content-center m-1">
