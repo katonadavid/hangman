@@ -14,8 +14,11 @@ class Word {
         $this->dbc->query("SELECT word FROM words_".$_SESSION['lang']." ORDER BY RAND() LIMIT 1");
         $row = $this->dbc->single();
 
+        // trimming word
+        $word = trim($row->word);
+
         // We might get compound words, so we explode the returned string into words
-        $wordsArray = explode(' ',$row->word);
+        $wordsArray = explode(' ',$word);
 
         foreach ($wordsArray as $i => $word) {
             // Converting the words to lowercase, and split it to array with multibyte chars preserved

@@ -1,7 +1,8 @@
 class Drawing {
 
     constructor() {
-        this.drawing = [
+        this.drawingSvg = document.querySelector('#man');
+        this.drawingItems = [
             'ground-path',
             'wood1-path',
             'wood2-path',
@@ -22,8 +23,9 @@ class Drawing {
     }
 
     drawNextItem(){
-        let next = this.drawing.shift();
+        let next = this.drawingItems.shift();
         if(Array.isArray(next)){
+            this.drawingSvg.classList.add('hasHead');
             next.forEach(lineId => {
                 let line = document.getElementById(lineId);
                 line.classList.add('draw');
@@ -32,7 +34,7 @@ class Drawing {
             let line = document.getElementById(next);
             line.classList.add('draw');
         }
-        if(this.drawing.length === 0) {
+        if(this.drawingItems.length === 0) {
             alert('Game over');
         }
     }
@@ -129,12 +131,19 @@ class App {
             // The element on index 0 is a boolean, which describes if we have the letter in the words
             if(result[0]){
                 this.letters.drawLetter(letter, result[1]);
-                let pastletter = document.createElement('span');
-                pastletter.innerText = letter.toUpperCase();
-                this.pastLettersDiv.append(pastletter);
             }else{
                 this.drawing.drawNextItem();
+                if(this.drawing.drawingSvg.classList.contains('hasHead')){
+                    this.drawing.drawingSvg.classList.add('surprised');
+                    setTimeout(() => {
+                        this.drawing.drawingSvg.classList.remove('surprised');
+                    }, 1500);
+                }
+
             }
+            let pastletter = document.createElement('span');
+            pastletter.innerText = letter.toUpperCase();
+            this.pastLettersDiv.append(pastletter);
         }else {
             alert('már használtad');
         }

@@ -1,5 +1,12 @@
 $brown : #482f2f;
 $purple : #9f2c9d;
+$headerHeight : 12%;
+
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 body {
     padding: 0;
@@ -10,19 +17,45 @@ body {
     user-select: none;
 }
 
-header::before {
-    content: '';
-    height: 0.6rem;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    background: $brown;
-    background: linear-gradient(90deg, $brown 9%, $purple 100%);
-    border-bottom: 2px solid white;
+header{
+    height: $headerHeight;
+
+    img {
+        height: 70%;
+    }
+
+    &::before {
+        content: '';
+        height: 12%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        background: $brown;
+        background: linear-gradient(90deg, $brown 9%, $purple 100%);
+        border-bottom: 2px solid white;
+    }
 }
 
-#logo {
-    height: 2rem;
+main {
+    height: 100% - $headerHeight;
+    position: relative;
+
+    section{
+        @include flexCenter();
+
+        &:nth-child(1){
+            height: 60%;
+        }
+        &:nth-child(2){
+            height: 10%;
+        }
+        &:nth-child(3){
+            height: 20%;
+        }
+        &:nth-child(4){
+            height: 10%;
+        }
+    }
 }
 
 input{
@@ -30,6 +63,7 @@ input{
     background-color: $brown;
     font-weight: bold;
     color: wheat;
+    z-index: 5;
 
     &:focus {
         border: 1px solid $brown;
@@ -40,12 +74,15 @@ input{
     }
 }
 
-/* Man drawing */
-
-#man {
-    height: 310px;
+#wordCount {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: left;
+    padding-left: 3%;
 }
 
+/* Man drawing */
 /* Initially hide drawing */ 
 
 #ground-path {
@@ -105,7 +142,7 @@ input{
 
 /* Man animations */
 
-#mouth-2-grp {
+#mouth-2-path {
     display: none;
 }
 
@@ -133,9 +170,23 @@ input{
     animation: draw 300ms linear forwards;
 }
 
+#mouth-path.draw {
+    animation: draw 0ms linear forwards;
+}
+
 @keyframes draw {
     to {
         stroke-dashoffset: 0;
+    }
+}
+
+#man.surprised {
+
+    #mouth-path {
+        display: none;
+    }
+    #mouth-2-path {
+        display: block;
     }
 }
 
@@ -144,25 +195,27 @@ input{
 #past-letters {
     background-color: $brown;
     color: white;
-    border-radius: 5%;
-    max-width: 135px;
+    width: 100%;
+    height: 100%;
+    border-radius: 2%;
     word-break: break-all;
     flex-wrap: wrap;
+    max-width: 420px;
     span {
-        padding: 0.3rem;
+        padding: 0 1%;
     }
 }
 
 /* Letters */
 
 .letter-frame {
-    height: 3rem;
-    width: 2rem;
+    height: calc(1.2rem + 1.5vw);
+    width: calc(1rem + 1vw);
 
     &::after {
         content: '';
         height: 5px;
-        width: 30px;
+        width: 100%;
         position: absolute;
         bottom: 0;
         left: 0;
@@ -171,11 +224,10 @@ input{
         margin-right: auto;
         background: url(../img/line.svg) no-repeat;
     }
-}
 
-
-.letter {
-    font-weight: bold;
-    font-size: 2rem;
-    color: $brown;
+    span {
+        font-weight: bold;
+        font-size: calc(1em + 1vw);
+        color: $brown;
+    }
 }

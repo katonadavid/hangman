@@ -5,7 +5,7 @@ session_save_path('../sess');
 session_start();
 
 
-$_SESSION['lang'] = 'de';
+$_SESSION['lang'] = 'hu';
 
 if(!isset($_SESSION['pastletters'])){
     $_SESSION['pastletters'] = [];

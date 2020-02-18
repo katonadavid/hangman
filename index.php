@@ -22,17 +22,13 @@ session_destroy();
 </head>
 <body class="d-flex flex-column">
 
-    <header class="w-100 d-flex justify-content-center py-3">
+    <header class="position-relative w-100 d-flex justify-content-center py-3">
         <img id="logo" src="img/logo.svg" alt="">
     </header>
     <main class="d-flex flex-column flex-fill">
-        <section class="d-flex justify-content-center align-items-center h-75 px-3" id="middle">
-            <div id="middle-left" class="h-100 flex-fill d-flex align-items-center">
-                <div id="past-letters" class="d-flex justify-content-center align-items-center font-weight-bold">
-                </div>
-            </div>
-            <div id="middle-right" class="h-100 flex-fill d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 934.1 1122" id="man">
+        <section class="px-3">
+            <div class="h-100 flex-fill d-flex align-items-center justify-content-center">
+                <svg class="h-100 pb-1" id="man" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 934.1 1122" id="man">
                     <defs>
                     <clipPath id="clip-path" transform="translate(1 1.5)">
                         <path id="mouth-2" d="M693,361c.9-5.6,3.5-10.1,7.3-14.3s7.8-8.4,12.6-10.5c10.6-4.6,20.8,6.7,23.1,16,1.1,4.4,1.9,12-1.3,15.8s-11.4,6.8-16.4,7.3c-9.8.8-19.3-6-22.2-15.3-2.2-7.3-13.8-4.2-11.5,3.2,4.4,14.6,18.9,25.3,34.4,24,8.2-.7,18.3-4.7,24.2-10.7s6.3-16.3,5-24.3c-2.6-15.8-16.9-31.1-34-28.7-8.3,1.2-15.1,7.2-20.7,13s-10.8,13-12.1,21.4,10.4,10.8,11.6,3.1Z" fill="none"/>
@@ -162,12 +158,18 @@ session_destroy();
                     </g>
                 </svg>
             </div>
-              
-                    
+        </section>
+        <section>
+            <div class="h-100 flex-fill d-flex justify-content-center">
+                    <div id="past-letters" class="d-flex justify-content-center align-items-center font-weight-bold"></div>
+            </div>
         </section>
         <!-- END OF MAN -->
-        <section class="d-flex flex-fill flex-column justify-content-around align-items-center">
-            <div id="letter-list" class="d-flex w-100"></div>
+        <section class="d-flex justify-content-around align-items-center">
+            <div id="letter-list" class="d-flex w-100 flex-column flex-md-row flex-wrap justify-content-center align-items-center"></div>
+        </section>
+        <section class="position-relative">
+            <span id="wordCount">2 Wörter</span>
             <input type="text" name="letterinput" id="letterinput" class="text-center" size="2" maxlength="1" autofocus>
         </section>
     </main>
@@ -175,11 +177,11 @@ session_destroy();
 
 <!-- Word and letter templates -->
 <template id="tmp-word">
-        <div class="word d-flex mx-3 w-100 flex-wrap justify-content-center"></div>
+        <div class="word d-flex mx-3 flex-wrap justify-content-center"></div>
 </template>
 <template id="tmp-letter">
     <div class="letter-frame position-relative d-flex align-items-end justify-content-center m-1">
-                    <span class="letter text-uppercase"></span>
+                    <span class="text-uppercase"></span>
     </div>
 </template>
 </html>
