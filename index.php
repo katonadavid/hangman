@@ -169,7 +169,7 @@ session_destroy();
             <div id="letter-list" class="d-flex w-100 flex-column flex-md-row flex-wrap justify-content-center align-items-center"></div>
         </section>
         <section class="position-relative">
-            <span id="wordCount">2 Wörter</span>
+            <span id="wordCount"></span>
             <input type="text" name="letterinput" id="letterinput" class="text-center" size="2" maxlength="1" autofocus>
         </section>
     </main>

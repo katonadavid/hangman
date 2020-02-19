@@ -1,10 +1,10 @@
 <?php
 
-$word = 'geschirrspülmaschine ';
-$wordar = explode(' ',$word);
-var_dump($wordar);
-$nw = preg_split('//u', mb_strtolower($word), null, PREG_SPLIT_NO_EMPTY);
+$arr1 = ['k', 'i','s','t','e'];
+$arr2 = ['g','h','r','a','q','k', 's','t','m','x','e'];
 
-var_dump($nw);
+$arr3 = array_diff($arr1, $arr2);
+
+var_dump($arr3);
 
 ?>

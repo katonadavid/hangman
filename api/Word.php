@@ -5,7 +5,6 @@ require('DBC.php');
 class Word {
 
     private $dbc;
-    private $word;
 
     function getWord() {
 
@@ -46,6 +45,7 @@ class Word {
         if(!in_array($letter, $_SESSION['pastletters'])){
             $_SESSION['pastletters'][] = $letter;
             $letterFound = false;
+            $gameWon = false;
             for($i = 0; $i < sizeof($charactersArray); $i++){
                 
                 $letterIndexes[$i] = [];
@@ -56,12 +56,34 @@ class Word {
                         $letterIndexes[$i][] = $j;
                     }
                 }
+
+                if($letterFound){
+                    // Find out if there are still letters to be guessed
+                    $lettersMissing = false;
+                    $i = 0;
+                    while(!$lettersMissing && $i < sizeof($_SESSION['word'])){
+                        $arrtest = array_diff($_SESSION['word'][$i], $_SESSION['pastletters']);
+                        $_SESSION['info1'][] = $arrtest;
+                        $_SESSION['info2'] = $_SESSION['word'][$i];
+                        $lettersMissing = sizeof(array_diff($_SESSION['word'][$i], $_SESSION['pastletters'])) > 0 ? true : false;
+                        $i = $lettersMissing ? $i : $i + 1;
+                    }
+                    if($i == sizeof($_SESSION['word'])){
+                        // There are no letters missing
+                        $gameWon = true;
+                    }
+                }
             }
-            echo json_encode([$letterFound, $letterIndexes], JSON_UNESCAPED_UNICODE);
+            echo json_encode([$letterFound, $letterIndexes, $gameWon], JSON_UNESCAPED_UNICODE);
         }else{
             // We return false, if the user has tried this letter already
             echo json_encode(false, JSON_UNESCAPED_UNICODE);
         }
+    }
+
+    function checkWin () {
+
+
     }
 }
 

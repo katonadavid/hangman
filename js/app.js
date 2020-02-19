@@ -46,6 +46,9 @@ class LetterList {
         this.letterListObject = document.querySelector('#letter-list');
         this.wordObjects = [];
         this.words = [];
+        console.log(wordLengths.length);
+        
+        document.querySelector('#wordCount').innerText = wordLengths.length > 1 ? wordLengths.length + ' words' : wordLengths.length + ' word';
         let wordTemplate = document.querySelector('#tmp-word');
         let letterTemplate = document.querySelector('#tmp-letter');
 
@@ -96,7 +99,6 @@ class PastLetterList {
             this.pastLetterList[letter].classList.remove('flash-red');
         }, 1000);
     }
-
 }
 
 class ApiHelper {
@@ -121,8 +123,6 @@ class ApiHelper {
         const result = await response.json();
         return result;
     }
-
-
 }
 
 class App {
@@ -156,11 +156,16 @@ class App {
     async checkLetter(letter) {
 
         let checkResult = await this.api.checkLetter(letter);
-
+        console.log(checkResult);
+        
         if(checkResult){
             // The element on index 0 is a boolean, which describes if we have the letter in the words
             if(checkResult[0]){
                 this.letters.drawLetter(letter, checkResult[1]);
+                if(checkResult[2]){
+                    alert('Gratulálok!');
+                    // More winning logic
+                }
             }else{
                 this.drawing.drawNextItem();
                 if(this.drawing.drawingSvg.classList.contains('hasHead')){
