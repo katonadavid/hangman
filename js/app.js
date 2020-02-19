@@ -76,6 +76,29 @@ class LetterList {
     }
 }
 
+class PastLetterList {
+
+    constructor () {
+        this.pastLettersObject = document.querySelector('#past-letters');
+        this.pastLetterList = [];
+    }
+
+    appendLetter (letter) {
+        let pastletter = document.createElement('span');
+        pastletter.innerText = letter.toUpperCase();
+        this.pastLettersObject.append(pastletter);
+        this.pastLetterList[letter] = pastletter;
+    }
+
+    flashLetter (letter) {
+        this.pastLetterList[letter].classList.add('flash-red');
+        setTimeout(() => {
+            this.pastLetterList[letter].classList.remove('flash-red');
+        }, 1000);
+    }
+
+}
+
 class ApiHelper {
 
     constructor (url){
@@ -95,10 +118,7 @@ class ApiHelper {
             method : 'post',
             body : post
         });
-        
         const result = await response.json();
-        console.log(result);
-        
         return result;
     }
 
@@ -109,7 +129,7 @@ class App {
 
     constructor (apiUrl) {
         this.api = new ApiHelper(apiUrl);
-        this.pastLettersDiv = document.querySelector('#past-letters');
+        this.pastLetters = new PastLetterList();
         this.drawing = new Drawing();
     }
     
@@ -117,20 +137,30 @@ class App {
         this.wordsLength = await this.api.getWord();
         this.letters = new LetterList(this.wordsLength);
         this.input = document.querySelector('input');
-        this.input.addEventListener('input', this.checkLetter.bind(this));
+        this.input.addEventListener('input', this.checkInput.bind(this));
     }
 
-    async checkLetter() {
+    checkInput() {
         const letter = this.input.value;
-        console.log('Letter:' +letter);
-        
+        const charRegex = new RegExp('[a-zA-ZÀ-ž]');
         this.input.value = '';
-        let result = await this.api.checkLetter(letter);
+        let validLetter = charRegex.test(letter);
         
-        if(result){
+        if(validLetter){
+            this.checkLetter(letter);
+        }else{
+            alert('not a valid input');
+        }
+    }
+
+    async checkLetter(letter) {
+
+        let checkResult = await this.api.checkLetter(letter);
+
+        if(checkResult){
             // The element on index 0 is a boolean, which describes if we have the letter in the words
-            if(result[0]){
-                this.letters.drawLetter(letter, result[1]);
+            if(checkResult[0]){
+                this.letters.drawLetter(letter, checkResult[1]);
             }else{
                 this.drawing.drawNextItem();
                 if(this.drawing.drawingSvg.classList.contains('hasHead')){
@@ -139,13 +169,10 @@ class App {
                         this.drawing.drawingSvg.classList.remove('surprised');
                     }, 1500);
                 }
-
             }
-            let pastletter = document.createElement('span');
-            pastletter.innerText = letter.toUpperCase();
-            this.pastLettersDiv.append(pastletter);
-        }else {
-            alert('már használtad');
+            this.pastLetters.appendLetter(letter);
+        }else{
+            this.pastLetters.flashLetter(letter);
         }
     }
 }

@@ -58,8 +58,8 @@ class Word {
                 }
             }
             echo json_encode([$letterFound, $letterIndexes], JSON_UNESCAPED_UNICODE);
-            // Itt folytatni. hiába regisztrálja a múltbeliek közé a betűt, a response marad az indextömb
         }else{
+            // We return false, if the user has tried this letter already
             echo json_encode(false, JSON_UNESCAPED_UNICODE);
         }
     }
