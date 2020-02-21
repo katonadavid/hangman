@@ -46,6 +46,8 @@ class Word {
             $_SESSION['pastletters'][] = $letter;
             $letterFound = false;
             $gameWon = false;
+            $gameOver = false;
+
             for($i = 0; $i < sizeof($charactersArray); $i++){
                 
                 $letterIndexes[$i] = [];
@@ -58,32 +60,42 @@ class Word {
                 }
 
                 if($letterFound){
-                    // Find out if there are still letters to be guessed
-                    $lettersMissing = false;
-                    $i = 0;
-                    while(!$lettersMissing && $i < sizeof($_SESSION['word'])){
-                        $arrtest = array_diff($_SESSION['word'][$i], $_SESSION['pastletters']);
-                        $_SESSION['info1'][] = $arrtest;
-                        $_SESSION['info2'] = $_SESSION['word'][$i];
-                        $lettersMissing = sizeof(array_diff($_SESSION['word'][$i], $_SESSION['pastletters'])) > 0 ? true : false;
-                        $i = $lettersMissing ? $i : $i + 1;
-                    }
-                    if($i == sizeof($_SESSION['word'])){
-                        // There are no letters missing
+                    if(!$this->checkLettersLeft()){
                         $gameWon = true;
+                        $_SESSION['gameWon'] = true;
                     }
                 }
             }
-            echo json_encode([$letterFound, $letterIndexes, $gameWon], JSON_UNESCAPED_UNICODE);
+            
+            if(!$letterFound){
+                $_SESSION['falseTips']++;
+                    if($_SESSION['falseTips'] === STEPS_TILL_DEATH){
+                        $gameOver = true;
+                        $_SESSION['gameOver'] = true;
+                    }
+            }
+
+            echo json_encode([$letterFound, $letterIndexes, $gameWon, $gameOver], JSON_UNESCAPED_UNICODE);
         }else{
             // We return false, if the user has tried this letter already
             echo json_encode(false, JSON_UNESCAPED_UNICODE);
         }
     }
 
-    function checkWin () {
-
-
+    function checkLettersLeft () {
+        // If there are letters left, we return true;
+        $lettersMissing = false;
+        $i = 0;
+        while(!$lettersMissing && $i < sizeof($_SESSION['word'])){
+            $lettersMissing = sizeof(array_diff($_SESSION['word'][$i], $_SESSION['pastletters'])) > 0 ? true : false;
+            $i = $lettersMissing ? $i : $i + 1;
+        }
+        if($i == sizeof($_SESSION['word'])){
+            // There are no letters missing
+            return false;
+        }else{
+            return true;
+        }
     }
 }
 

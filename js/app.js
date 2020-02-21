@@ -20,9 +20,27 @@ class Drawing {
             'left-leg-path',
             'right-leg-path'
         ];
+        this.drawingDeadItems = [
+            [
+                'eye1-path',
+                'eye2-path',
+                'mouth-path'
+            ],
+            [
+                'eye1-dead-path1', 
+                'eye1-dead-path2', 
+                'eye2-dead-path1', 
+                'eye2-dead-path2',
+                'mouth-dead-path'
+            ]
+        ];
+        this.drawingHappyItems = [
+            ['mouth-path'],
+            ['happy-path']
+        ];
     }
 
-    drawNextItem(){
+    drawNextItem() {
         let next = this.drawingItems.shift();
         if(Array.isArray(next)){
             this.drawingSvg.classList.add('hasHead');
@@ -34,8 +52,25 @@ class Drawing {
             let line = document.getElementById(next);
             line.classList.add('draw');
         }
-        if(this.drawingItems.length === 0) {
-            alert('Game over');
+    }
+
+    gameOver() {
+        this.drawingDeadItems[0].forEach( item => {
+            document.getElementById(item).remove();
+        });
+        this.drawingDeadItems[1].forEach( item => {
+            document.getElementById(item).classList.add('draw');
+        });
+    }
+
+    gameWon() {
+        if(this.drawingSvg.classList.contains('hasHead')){
+            this.drawingHappyItems[0].forEach( item => {
+                document.getElementById(item).remove();
+            });
+            this.drawingHappyItems[1].forEach( item => {
+                document.getElementById(item).classList.add('draw');
+            });
         }
     }
 }
@@ -46,7 +81,6 @@ class LetterList {
         this.letterListObject = document.querySelector('#letter-list');
         this.wordObjects = [];
         this.words = [];
-        console.log(wordLengths.length);
         
         document.querySelector('#wordCount').innerText = wordLengths.length > 1 ? wordLengths.length + ' words' : wordLengths.length + ' word';
         let wordTemplate = document.querySelector('#tmp-word');
@@ -120,8 +154,52 @@ class ApiHelper {
             method : 'post',
             body : post
         });
-        const result = await response.json();
-        return result;
+        try{
+            const result = await response.json();
+            return result;
+        }catch(e){
+            console.log(e.message);
+            console.log('Something went wrong. The game probably ended.');
+            
+        }
+    }
+}
+
+class UIFeedback {
+
+    constructor() {
+        this.invalidModal = document.querySelector('#invalid-input-modal');
+        this.gameWonModal = document.querySelector('#gameWon-modal');
+        this.gameOverModal = document.querySelector('#gameOver-modal');
+    }
+
+    invalidInput(){
+        this.invalidModal.classList.add('visible');
+        setTimeout(() => {
+            this.invalidModal.classList.remove('visible');
+        }, 4000);
+    }
+
+    gameWon(){
+        this.gameWonModal.classList.add('visible');
+    }
+    
+    gameOver(){
+        this.gameOverModal.classList.add('visible');
+    }
+}
+
+class Settings {
+
+    constructor(){
+        this.toggler = document.querySelector('#settings > div:first-child');
+        this.dropdown = document.querySelector('#settings > div:nth-child(2)');
+        this.toggler.addEventListener('click', this.slideToggle.bind(this));
+    }
+
+    slideToggle(){
+        $('#settings > div:nth-child(2)').slideToggle();
+        $('#settings > div:first-child').toggleClass('pushed');
     }
 }
 
@@ -131,6 +209,8 @@ class App {
         this.api = new ApiHelper(apiUrl);
         this.pastLetters = new PastLetterList();
         this.drawing = new Drawing();
+        this.ui = new UIFeedback();
+        this.settings = new Settings();
     }
     
     async init () {
@@ -149,7 +229,7 @@ class App {
         if(validLetter){
             this.checkLetter(letter);
         }else{
-            alert('not a valid input');
+            this.ui.invalidInput();
         }
     }
 
@@ -163,12 +243,20 @@ class App {
             if(checkResult[0]){
                 this.letters.drawLetter(letter, checkResult[1]);
                 if(checkResult[2]){
-                    alert('Gratulálok!');
-                    // More winning logic
+                    this.hideInputField();
+                    this.drawing.gameWon();
+                    this.ui.gameWon();
                 }
             }else{
                 this.drawing.drawNextItem();
-                if(this.drawing.drawingSvg.classList.contains('hasHead')){
+                // The 4th element in the response describes if the game is over
+                if(checkResult[3]){
+                    this.hideInputField();
+                    this.drawing.gameOver();
+                    this.ui.gameOver();
+                }
+                // !checkResult[3] - if the game is not over, then make the surprised face.
+                if(this.drawing.drawingSvg.classList.contains('hasHead') && !checkResult[3]){
                     this.drawing.drawingSvg.classList.add('surprised');
                     setTimeout(() => {
                         this.drawing.drawingSvg.classList.remove('surprised');
@@ -176,9 +264,16 @@ class App {
                 }
             }
             this.pastLetters.appendLetter(letter);
-        }else{
+        }else if(checkResult === false){
             this.pastLetters.flashLetter(letter);
         }
+    }
+
+    hideInputField() {
+        this.input.classList.add('fadeOut');
+        setTimeout(() => {
+            this.input.remove();
+        }, 500);
     }
 }
 

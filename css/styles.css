@@ -149,11 +149,26 @@ input:focus {
   display: none;
 }
 
+#mouth-dead-path {
+  stroke-dasharray: 83px;
+  stroke-dashoffset: 83px;
+}
+
 #eye2-path.draw, #eye1-path.draw {
   stroke-dasharray: 25px;
   stroke-dashoffset: 0;
   -webkit-animation: blink 6s infinite linear;
           animation: blink 6s infinite linear;
+}
+
+#eye1-dead-path1, #eye1-dead-path2, #eye2-dead-path1, #eye2-dead-path2 {
+  stroke-dasharray: 80px;
+  stroke-dashoffset: 80px;
+}
+
+#happy-path {
+  stroke-dasharray: 253px;
+  stroke-dashoffset: 249px;
 }
 
 @-webkit-keyframes blink {
@@ -315,5 +330,109 @@ input:focus {
   font-weight: bold;
   font-size: calc(1em + 1vw);
   color: #482f2f;
+}
+
+input.fadeOut {
+  -webkit-animation: fadeOut 0.5s forwards linear;
+          animation: fadeOut 0.5s forwards linear;
+}
+
+@-webkit-keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/* UI Feedback */
+.ui-modal {
+  position: absolute;
+  top: 23%;
+  left: -20rem;
+  -webkit-transition: top 500ms, left 500ms;
+  transition: top 500ms, left 500ms;
+  width: 10rem;
+  -webkit-transform: scale(1.4) rotate(-17deg);
+          transform: scale(1.4) rotate(-17deg);
+}
+
+.ui-modal span {
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.ui-modal.visible {
+  left: 8%;
+}
+
+#invalid-input-modal {
+  -webkit-transform: none;
+          transform: none;
+  background: url(../img/modal_brown.svg) no-repeat 100%;
+}
+
+#invalid-input-modal span {
+  font-size: initial;
+}
+
+#gameWon-modal {
+  background: url(../img/modal_green.svg) no-repeat 100%;
+}
+
+#gameOver-modal {
+  background: url(../img/modal_red.svg) no-repeat 100%;
+}
+
+/* Settings */
+#settings {
+  position: absolute;
+  right: 1%;
+}
+
+#settings img {
+  height: 1.5rem;
+}
+
+#settings > div:first-child {
+  position: relative;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
+}
+
+#settings > div:first-child:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+#settings > div:first-child.pushed {
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75) inset;
+          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75) inset;
+}
+
+#settings > div:nth-child(2) {
+  border-radius: 5px;
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 110%;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
+}
+
+#settings > div:nth-child(2) div {
+  margin: 0.5rem;
+}
+
+#settings > div:nth-child(2) div img {
+  margin-right: 0.5rem;
 }
 /*# sourceMappingURL=styles.css.map */
