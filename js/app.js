@@ -194,13 +194,32 @@ class Settings {
     constructor(){
         this.toggler = document.querySelector('#settings > div:first-child');
         this.dropdown = document.querySelector('#settings > div:nth-child(2)');
+        this.difficultyRange = document.querySelector('input[type="range"]');
         this.toggler.addEventListener('click', this.slideToggle.bind(this));
+        this.difficultyRange.addEventListener('input', this.changeRangeColor);
     }
 
     slideToggle(){
         $('#settings > div:nth-child(2)').slideToggle();
         $('#settings > div:first-child').toggleClass('pushed');
     }
+
+    changeRangeColor(){
+
+        this.className = '';
+
+        switch(this.value){
+            case '1' :
+                this.classList.add('easy');
+                break;
+            case '2' :
+                this.classList.add('medium');
+                break;
+            case '3' :
+                this.classList.add('hard');
+        }
+    }
+
 }
 
 class App {
@@ -216,7 +235,7 @@ class App {
     async init () {
         this.wordsLength = await this.api.getWord();
         this.letters = new LetterList(this.wordsLength);
-        this.input = document.querySelector('input');
+        this.input = document.querySelector('#letterinput');
         this.input.addEventListener('input', this.checkInput.bind(this));
     }
 

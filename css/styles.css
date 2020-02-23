@@ -64,7 +64,7 @@ main section:nth-child(4) {
   height: 10%;
 }
 
-input {
+input[type="text"] {
   border: 1px solid gray;
   background-color: #482f2f;
   font-weight: bold;
@@ -72,7 +72,7 @@ input {
   z-index: 5;
 }
 
-input:focus {
+input[type="text"]:focus {
   border: 1px solid #482f2f;
   outline: none;
   -webkit-box-shadow: 0px 0px 1px 2px #482f2f;
@@ -426,13 +426,195 @@ input.fadeOut {
   top: 110%;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
           box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.75);
-}
-
-#settings > div:nth-child(2) div {
-  margin: 0.5rem;
+  z-index: 20;
 }
 
 #settings > div:nth-child(2) div img {
   margin-right: 0.5rem;
+}
+
+.diff div {
+  height: 0.8rem;
+  width: 0.8rem;
+  border-radius: 50%;
+}
+
+.diff #easy {
+  background-color: green;
+}
+
+.diff #medium {
+  background-color: orange;
+}
+
+.diff #hard {
+  background-color: maroon;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 0px 0;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 22px;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+          box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border-radius: 1.6px;
+  border: 0px solid #010101;
+}
+
+input[type=range].easy::-webkit-slider-runnable-track {
+  background: #1fa41d;
+}
+
+input[type=range].medium::-webkit-slider-runnable-track {
+  background: orange;
+}
+
+input[type=range].hard::-webkit-slider-runnable-track {
+  background: maroon;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+          box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 1.7px solid #482f2f;
+  height: 22px;
+  width: 16px;
+  border-radius: 0px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: 0px;
+}
+
+input[type=range].easy:focus::-webkit-slider-runnable-track {
+  background: #23ba21;
+}
+
+input[type=range].medium:focus::-webkit-slider-runnable-track {
+  background: orange;
+}
+
+input[type=range].mediun:focus::-webkit-slider-runnable-track {
+  background: maroon;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 22px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border-radius: 1.6px;
+  border: 0px solid #010101;
+}
+
+input[type=range].easy::-moz-range-track {
+  background: #1fa41d;
+}
+
+input[type=range].medium::-moz-range-track {
+  background: orange;
+}
+
+input[type=range].hard::-moz-range-track {
+  background: maroon;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 1.7px solid #482f2f;
+  height: 22px;
+  width: 16px;
+  border-radius: 0px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 22px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+  border: 0px solid #010101;
+  border-radius: 3.2px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range].easy::-ms-fill-lower {
+  background: #1fa41d;
+}
+
+input[type=range].medium::-ms-fill-lower {
+  background: orange;
+}
+
+input[type=range].hard::-ms-fill-lower {
+  background: maroon;
+}
+
+input[type=range]::-ms-fill-upper {
+  border: 0px solid #010101;
+  border-radius: 3.2px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range].easy::-ms-fill-upper {
+  background: #1fa41d;
+}
+
+input[type=range].medium::-ms-fill-upper {
+  background: orange;
+}
+
+input[type=range].hard::-ms-fill-upper {
+  background: maroon;
+}
+
+input[type=range]::-ms-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 1.7px solid #482f2f;
+  width: 16px;
+  border-radius: 0px;
+  background: #ffffff;
+  cursor: pointer;
+  height: 22px;
+}
+
+input[type=range].easy:focus::-ms-fill-lower {
+  background: #1fa41d;
+}
+
+input[type=range].medium:focus::-ms-fill-lower {
+  background: orange;
+}
+
+input[type=range].hard:focus::-ms-fill-lower {
+  background: maroon;
+}
+
+input[type=range].easy:focus::-ms-fill-upper {
+  background: #23ba21;
+}
+
+input[type=range].medium:focus::-ms-fill-upper {
+  background: orange;
+}
+
+input[type=range].hard:focus::-ms-fill-upper {
+  background: maroon;
 }
 /*# sourceMappingURL=styles.css.map */

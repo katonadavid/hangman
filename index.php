@@ -6,6 +6,8 @@ if(isset($_COOKIE[session_name()])){
     setcookie(session_name(), "", time()-3600, "/");
 }
 
+$difficulty = [1, 'easy'];
+
 $_SESSION = [];
 session_destroy();
 ?>
@@ -26,22 +28,33 @@ session_destroy();
     <header class="position-relative w-100 d-flex justify-content-center py-3">
         <img id="logo" src="img/logo.svg" alt="">
         <div id="settings">
-        <div class="d-flex justify-content-center align-items-center h-100 p-1">
-            <img src="img/gear.svg">
-        </div>
-        <div class="flex-column align-items-center">
-            <div class="d-flex align-items-center">
-                <img src="img/globe.svg">
-                <select name="language" id="language">
-                    <option value="en">en</option>
-                    <option value="de">de</option>
-                    <option value="hu">hu</option>
-                </select>
+            <div class="d-flex justify-content-center align-items-center h-100 p-1">
+                <img src="img/gear.svg">
             </div>
-            <div class="d-flex align-items-center">
-                <img src="img/difficulty.svg">
+            <div class="flex-column align-items-center">
+                <div class="d-flex flex-column align-items-center p-2">
+                    <div class="d-flex">
+                        <img src="img/globe.svg"><span class="font-weight-bold">Language</span>
+                    </div>
+                    <div class="d-flex mt-1" id="lang-select">
+                        <div class="lang p-1"><span>en</span></div>
+                        <div class="lang p-1"><span>de</span></div>
+                        <div class="lang p-1"><span>hu</span></div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column align-items-center p-2">
+                    <div class="d-flex">
+                        <img src="img/difficulty.svg"><span class="font-weight-bold">Difficulty</span>
+                    </div>
+                    <div class="d-flex mt-1" id="diff-select">
+                        <!-- <div class="diff p-1"><div title="Easy" id="easy"></div></div>
+                        <div class="diff p-1"><div title="Medium" id="medium"></div></div>
+                        <div class="diff p-1"><div title="Hard" id="hard"></div></div> -->
+                        <input type="range" name="diff" id="diff" min="1" max="3" step="1" value="<?php echo $difficulty[0]; ?>" class="<?php echo $difficulty[1]; ?>">
+                    </div>
+                </div>
+            
             </div>
-        </div>
         </div>
     </header>
     <main class="d-flex flex-column flex-fill">
