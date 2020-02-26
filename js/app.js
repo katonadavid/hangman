@@ -2,6 +2,10 @@ class Drawing {
 
     constructor() {
         this.drawingSvg = document.querySelector('#man');
+        this.paths = document.querySelectorAll('.drawing-item');
+    }
+
+    initLines(){
         this.drawingItems = [
             'ground-path',
             'wood1-path',
@@ -73,15 +77,27 @@ class Drawing {
             });
         }
     }
+
+    clear() {
+        this.initLines();
+        this.paths.forEach(path => {
+            path.classList.remove('draw');
+        });
+        this.drawingSvg.classList.remove('hasHead');
+    }
+
 }
 
 class LetterList {
 
-    constructor (wordLengths) {
+    constructor () {
         this.letterListObject = document.querySelector('#letter-list');
+    }
+    
+    init(wordLengths){
         this.wordObjects = [];
         this.words = [];
-        
+        this.letterListObject.innerHTML = "";
         document.querySelector('#wordCount').innerText = wordLengths.length > 1 ? wordLengths.length + ' words' : wordLengths.length + ' word';
         let wordTemplate = document.querySelector('#tmp-word');
         let letterTemplate = document.querySelector('#tmp-letter');
@@ -133,6 +149,43 @@ class PastLetterList {
             this.pastLetterList[letter].classList.remove('flash-red');
         }, 1000);
     }
+
+    clear() {
+        this.pastLetterList = [];
+        this.pastLettersObject.innerHTML = "";
+    }
+}
+
+class Input {
+
+    constructor(listener){
+        this.listenerFn = listener;
+        this.inputElement = document.querySelector('#letterinput');
+    }
+
+    hide() {
+        this.inputElement.classList.add('fadeOut');
+        setTimeout(() => {
+            this.inputElement.style.display="none";
+        }, 500);
+    }
+
+    init(listener) {
+        this.show();
+        this.setListener(listener)
+    }
+
+    show() {
+        this.inputElement.classList.remove('fadeOut');
+        this.inputElement.classList.add('fadeIn');
+        this.inputElement.style.display="block";
+    }
+
+    setListener(listener){
+        this.inputElement.removeEventListener('input', this.listenerFn);
+        this.listenerFn = listener;
+        this.inputElement.addEventListener('input', listener);
+    }
 }
 
 class ApiHelper {
@@ -141,7 +194,11 @@ class ApiHelper {
         this.url = url;
     }
 
-    async getWord () {
+    async getWord (newGame = false) {
+        if(newGame){
+            await this.clearSession();
+        }
+        
         const response = await fetch(`${this.url}/word/getword`);
         const wordsLength = await response.json();
         return wordsLength;
@@ -160,8 +217,11 @@ class ApiHelper {
         }catch(e){
             console.log(e.message);
             console.log('Something went wrong. The game probably ended.');
-            
         }
+    }
+
+    async clearSession() {
+        await fetch(`${this.url}/session/clear`);
     }
 }
 
@@ -187,6 +247,11 @@ class UIFeedback {
     gameOver(){
         this.gameOverModal.classList.add('visible');
     }
+
+    clear(){
+        this.gameWonModal.classList.remove('visible');
+        this.gameOverModal.classList.remove('visible');
+    }
 }
 
 class Settings {
@@ -194,9 +259,21 @@ class Settings {
     constructor(){
         this.toggler = document.querySelector('#settings > div:first-child');
         this.dropdown = document.querySelector('#settings > div:nth-child(2)');
+        this.languages = document.querySelectorAll('.lang');
         this.difficultyRange = document.querySelector('input[type="range"]');
+        this.form = document.querySelector('#settings form');
+
         this.toggler.addEventListener('click', this.slideToggle.bind(this));
+        this.languages.forEach(lang => {
+            lang.addEventListener('click', this.changeLang.bind(this));
+        });
         this.difficultyRange.addEventListener('input', this.changeRangeColor);
+        this.form.addEventListener('submit', this.submitSettings.bind(this));
+    }
+
+    setNewGameHandler(fn, apiurl){
+        this.newGame = fn;
+        this.apiurl = apiurl;
     }
 
     slideToggle(){
@@ -220,29 +297,55 @@ class Settings {
         }
     }
 
+    changeLang(e) {
+        this.languages.forEach(lang => {
+            lang.classList.remove('active');
+        });
+        e.target.closest('.lang').classList.add('active');
+    }
+    
+    async submitSettings(e) {
+        this.slideToggle();
+        e.preventDefault();
+        const lang = document.querySelector('.lang.active').innerText;
+        const data = new FormData(this.form);
+        data.append('lang', lang);
+
+        await fetch(`${this.apiurl}/session/setgame`, {
+            method: 'POST',
+            body: data
+        });
+        this.newGame(true);
+    }
 }
 
 class App {
 
     constructor (apiUrl) {
         this.api = new ApiHelper(apiUrl);
+        this.letters = new LetterList();
+        this.input = new Input();
         this.pastLetters = new PastLetterList();
         this.drawing = new Drawing();
         this.ui = new UIFeedback();
         this.settings = new Settings();
+        this.settings.setNewGameHandler(this.init.bind(this), apiUrl);
     }
     
-    async init () {
-        this.wordsLength = await this.api.getWord();
-        this.letters = new LetterList(this.wordsLength);
-        this.input = document.querySelector('#letterinput');
-        this.input.addEventListener('input', this.checkInput.bind(this));
+    async init (newGame = false) {
+        this.ui.clear();
+        this.pastLetters.clear();
+        this.drawing.clear();
+        this.input.init(this.checkInput.bind(this));
+        this.wordsLength = await this.api.getWord(newGame);
+        this.letters.init(this.wordsLength);
     }
 
     checkInput() {
-        const letter = this.input.value;
+        const letter = this.input.inputElement.value;
         const charRegex = new RegExp('[a-zA-ZÀ-ž]');
-        this.input.value = '';
+        
+        this.input.inputElement.value = '';
         let validLetter = charRegex.test(letter);
         
         if(validLetter){
@@ -255,14 +358,13 @@ class App {
     async checkLetter(letter) {
 
         let checkResult = await this.api.checkLetter(letter);
-        console.log(checkResult);
         
         if(checkResult){
             // The element on index 0 is a boolean, which describes if we have the letter in the words
             if(checkResult[0]){
                 this.letters.drawLetter(letter, checkResult[1]);
                 if(checkResult[2]){
-                    this.hideInputField();
+                    this.input.hide();
                     this.drawing.gameWon();
                     this.ui.gameWon();
                 }
@@ -270,7 +372,7 @@ class App {
                 this.drawing.drawNextItem();
                 // The 4th element in the response describes if the game is over
                 if(checkResult[3]){
-                    this.hideInputField();
+                    this.input.hide();
                     this.drawing.gameOver();
                     this.ui.gameOver();
                 }
@@ -286,13 +388,6 @@ class App {
         }else if(checkResult === false){
             this.pastLetters.flashLetter(letter);
         }
-    }
-
-    hideInputField() {
-        this.input.classList.add('fadeOut');
-        setTimeout(() => {
-            this.input.remove();
-        }, 500);
     }
 }
 

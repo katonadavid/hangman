@@ -2,14 +2,18 @@
 session_save_path('sess/');
 session_start();
 
-if(isset($_COOKIE[session_name()])){
-    setcookie(session_name(), "", time()-3600, "/");
-}
+$_SESSION=[];
 
-$difficulty = [1, 'easy'];
+// setcookie('lang', 'de', time() + 604800, "/");
+// setcookie('diff', '1', time() + 604800, "/");
 
-$_SESSION = [];
-session_destroy();
+
+$_SESSION['lang'] = isset($_COOKIE['lang']) ? $_COOKIE['lang'] : 'en';
+$langs = ['en' => '', 'de' => '', 'hu' => ''];
+$langs[$_SESSION['lang']] = 'active';
+$_SESSION['difficulty'] = isset($_COOKIE['diff']) ? $_COOKIE['diff'] : 1;
+$difficultyClasses = [1 => 'easy', 2 => 'medium', 3 => 'hard'];
+
 ?>
 
 <!DOCTYPE html>
@@ -19,41 +23,46 @@ session_destroy();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/MobileDetect.js" defer></script>
     <script src="js/jquery-3.4.1.min.js" defer></script>
     <script src="js/app.js" defer></script>
     <title>Hangman v0.1</title>
 </head>
 <body class="d-flex flex-column">
 
-    <header class="position-relative w-100 d-flex justify-content-center py-3">
-        <img id="logo" src="img/logo.svg" alt="">
-        <div id="settings">
-            <div class="d-flex justify-content-center align-items-center h-100 p-1">
-                <img src="img/gear.svg">
-            </div>
-            <div class="flex-column align-items-center">
-                <div class="d-flex flex-column align-items-center p-2">
-                    <div class="d-flex">
-                        <img src="img/globe.svg"><span class="font-weight-bold">Language</span>
-                    </div>
-                    <div class="d-flex mt-1" id="lang-select">
-                        <div class="lang p-1"><span>en</span></div>
-                        <div class="lang p-1"><span>de</span></div>
-                        <div class="lang p-1"><span>hu</span></div>
-                    </div>
+    <header class="position-relative">
+        <div class="position-relative w-100 d-flex justify-content-center py-3">
+            <img id="logo" src="img/logo.svg" alt="">
+        </div>
+        <div class="float-right">
+            <div id="settings">
+                <div class="d-flex justify-content-center align-items-center h-100 p-1">
+                    <img src="img/gear.svg">
                 </div>
-                <div class="d-flex flex-column align-items-center p-2">
-                    <div class="d-flex">
-                        <img src="img/difficulty.svg"><span class="font-weight-bold">Difficulty</span>
-                    </div>
-                    <div class="d-flex mt-1" id="diff-select">
-                        <!-- <div class="diff p-1"><div title="Easy" id="easy"></div></div>
-                        <div class="diff p-1"><div title="Medium" id="medium"></div></div>
-                        <div class="diff p-1"><div title="Hard" id="hard"></div></div> -->
-                        <input type="range" name="diff" id="diff" min="1" max="3" step="1" value="<?php echo $difficulty[0]; ?>" class="<?php echo $difficulty[1]; ?>">
-                    </div>
+                <div>
+                    <form method="POST"  class="d-flex flex-column align-items-center">
+                        <div class="d-flex flex-column align-items-center p-2">
+                            <div class="d-flex mb-1">
+                                <img src="img/globe.svg"><span class="font-weight-bold">Language</span>
+                            </div>
+                            <div class="d-flex mt-1 justify-content-between" id="lang-select">
+                                <?php foreach($langs as $lang => $active){
+                                    echo "<div class='lang p-1 $active'><span>$lang</span></div>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center p-2">
+                            <div class="d-flex mb-1">
+                                <img src="img/difficulty.svg"><span class="font-weight-bold">Difficulty</span>
+                            </div>
+                            <div class="d-flex mt-1" id="diff-select">
+                                <input type="range" name="diff" id="diff" min="1" max="3" step="1" value="<?php echo $_SESSION['difficulty']; ?>" class="<?php echo $difficultyClasses[$_SESSION['difficulty']]; ?>">
+                            </div>
+                        </div>
+                        <input type="submit" value="OK">
+                    </form>
                 </div>
-            
             </div>
         </div>
     </header>
@@ -130,109 +139,109 @@ session_destroy();
                     <g id="man">
                         <g id="mouth-2-grp">
                         <g clip-path="url(#clip-path)">
-                            <path id="mouth-2-path" d="M682,372.5s10-37,34-42,29.6,27.3,28.8,31.1S741,381.5,726,382.5s-22,5-30-7a89.4,89.4,0,0,1-11.1-24.1" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="mouth-2-path" d="M682,372.5s10-37,34-42,29.6,27.3,28.8,31.1S741,381.5,726,382.5s-22,5-30-7a89.4,89.4,0,0,1-11.1-24.1" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="head1-grp">
                         <g clip-path="url(#clip-path-2)">
-                            <path id="head1-path" d="M691,223.5s57,5,91,67-15,110-23,113-34,29-103-17-47-122-36-138,38-54,114-23" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="head1-path" d="M691,223.5s57,5,91,67-15,110-23,113-34,29-103-17-47-122-36-138,38-54,114-23" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="eye1-grp">
                         <g clip-path="url(#clip-path-3)">
-                            <path id="eye1-path" d="M649,257.5l5,29" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="eye1-path" d="M649,257.5l5,29" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="eye2-grp">
                         <g clip-path="url(#clip-path-4)">
-                            <path id="eye2-path" d="M709.3,257.3l5,29" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="eye2-path" d="M709.3,257.3l5,29" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="mouth-grp">
                         <g clip-path="url(#clip-path-5)">
-                            <line id="mouth-path" x1="675" y1="359.5" x2="755" y2="356.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <line class="drawing-item" id="mouth-path" x1="675" y1="359.5" x2="755" y2="356.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="body-grp">
                         <g clip-path="url(#clip-path-6)">
-                            <path id="body-path" d="M728,393.5v141c0,54,13,219,13,219" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="body-path" d="M728,393.5v141c0,54,13,219,13,219" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="left-arm-grp">
                         <g clip-path="url(#clip-path-7)">
-                            <path id="left-arm-path" d="M745,481.5s-49,11-122-29-68-59-73-79" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="left-arm-path" d="M745,481.5s-49,11-122-29-68-59-73-79" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="right-arm-grp">
                         <g clip-path="url(#clip-path-8)">
-                            <path id="right-arm-path" d="M705.4,488.3S782,480.5,839,448.5s85-70,85-70" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="right-arm-path" d="M705.4,488.3S782,480.5,839,448.5s85-70,85-70" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="left-leg-grp">
                         <g clip-path="url(#clip-path-9)">
-                            <path id="left-leg-path" d="M743.7,714.3S635,775.5,603,798.5s-64,48-64,62" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="left-leg-path" d="M743.7,714.3S635,775.5,603,798.5s-64,48-64,62" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="right-leg-grp">
                         <g clip-path="url(#clip-path-10)">
-                            <line id="right-leg-path" x1="732.2" y1="718.8" x2="872" y2="869.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <line class="drawing-item" id="right-leg-path" x1="732.2" y1="718.8" x2="872" y2="869.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="eye1-dead-grp1">
                         <g clip-path="url(#clip-path-11)">
-                            <path id="eye1-dead-path1" d="M684.7,254.4s-42,11-53,48" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
+                            <path class="drawing-item" id="eye1-dead-path1" d="M684.7,254.4s-42,11-53,48" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
                         </g>
                         </g>
                         <g id="eye1-dead-grp2">
                         <g clip-path="url(#clip-path-12)">
-                            <path id="eye1-dead-path2" d="M621.7,254.4s45,11,52,55" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
+                            <path class="drawing-item" id="eye1-dead-path2" d="M621.7,254.4s45,11,52,55" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
                         </g>
                         </g>
                         <g id="eye2-dead-grp1">
                         <g clip-path="url(#clip-path-13)">
-                            <path id="eye2-dead-path1" d="M686.2,252.4s42,11,53,48" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
+                            <path class="drawing-item" id="eye2-dead-path1" d="M686.2,252.4s42,11,53,48" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
                         </g>
                         </g>
                         <g id="eye2-dead-grp2">
                         <g clip-path="url(#clip-path-14)">
-                            <path id="eye2-dead-path2" d="M749.2,252.4s-45,11-52,55" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
+                            <path class="drawing-item" id="eye2-dead-path2" d="M749.2,252.4s-45,11-52,55" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
                         </g>
                         </g>
                         <g id="mouth-dead-grp">
                         <g clip-path="url(#clip-path-15)">
-                            <path id="mouth-dead-path" d="M765.7,357.4s-11-8-20-7-37,2-45,9-14,12-14,14" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
+                            <path class="drawing-item" id="mouth-dead-path" d="M765.7,357.4s-11-8-20-7-37,2-45,9-14,12-14,14" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="20"/>
                         </g>
                         </g>
                         <g id="happy-grp">
                         <g clip-path="url(#clip-path-16)">
-                            <path id="happy-path" d="M652,351.6s64.1,9.8,94.5-24.8c3.6,26.1,9.4,50.4-5.7,57.2s-35.3,3.3-53-7.2S650,345.9,650,345.9" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="30"/>
+                            <path class="drawing-item" id="happy-path" d="M652,351.6s64.1,9.8,94.5-24.8c3.6,26.1,9.4,50.4-5.7,57.2s-35.3,3.3-53-7.2S650,345.9,650,345.9" transform="translate(0)" fill="none" stroke="#482f2f" stroke-miterlimit="10" stroke-width="30"/>
                         </g>
                         </g>
                     </g>
                     <g id="scaffold">
                         <g id="ground-grp">
                         <g clip-path="url(#clip-path-17)">
-                            <line id="ground-path" x1="472" y1="1108.5" y2="1109.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <line class="drawing-item" id="ground-path" x1="472" y1="1108.5" y2="1109.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="wood1-grp">
                         <g clip-path="url(#clip-path-18)">
-                            <path id="wood1-path" d="M76,1120.5s-1-210-1-261,3-275,5-292,12-220,12-226,8-166,8-193-4-107-4-107" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="wood1-path" d="M76,1120.5s-1-210-1-261,3-275,5-292,12-220,12-226,8-166,8-193-4-107-4-107" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="wood2-grp">
                         <g clip-path="url(#clip-path-19)">
-                            <path id="wood2-path" d="M61,67.5s301-26,332-27,343-15,343-15" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <path class="drawing-item" id="wood2-path" d="M61,67.5s301-26,332-27,343-15,343-15" transform="translate(0)" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="wood3-grp">
                         <g clip-path="url(#clip-path-20)">
-                            <line id="wood3-path" x1="397" y1="27.5" x2="59" y2="342.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <line class="drawing-item" id="wood3-path" x1="397" y1="27.5" x2="59" y2="342.5" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                         <g id="wood4-grp">
                         <g clip-path="url(#clip-path-21)">
-                            <line id="wood4-path" x1="697.5" x2="697.5" y2="252" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
+                            <line class="drawing-item" id="wood4-path" x1="697.5" x2="697.5" y2="252" fill="none" stroke="#433" stroke-miterlimit="10" stroke-width="25"/>
                         </g>
                         </g>
                     </g>
